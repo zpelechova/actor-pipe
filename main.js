@@ -37,7 +37,7 @@ if (mode === "outputPayload") {
     // Replace the payload placeholder with actual output (this is needed for the webhook)
     .replace('"PAYLOAD_PLACEHOLDER":0', '"payload":{"userId":{{userId}},"createdAt":{{createdAt}},"eventType":{{eventType}},"eventData":{{eventData}},"resource":{{resource}}}');
     await Actor.setValue('OUTPUT_PAYLOAD', output, {contentType: 'text/plain'});
-    // TODO: This should also work on staging
+    // TODO: This should also work on staging - maybe we could get this info from client?
     await Actor.setValue('OUTPUT_URL', `${apiBaseUrl}/v2/acts/${process.env.APIFY_ACTOR_ID}/runs`, {contentType: 'text/plain'});
 
 } else {
