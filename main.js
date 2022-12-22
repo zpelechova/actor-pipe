@@ -34,7 +34,7 @@ if (mode === "outputPayload") {
         PAYLOAD_PLACEHOLDER: 0,
     })
 
-    // Replace the payload placeholder with actual output
+    // Replace the payload placeholder with actual output (this is needed for the webhook)
     .replace('"PAYLOAD_PLACEHOLDER":0', '"payload":{"userId":{{userId}},"createdAt":{{createdAt}},"eventType":{{eventType}},"eventData":{{eventData}},"resource":{{resource}}}');
     await Actor.setValue('OUTPUT_PAYLOAD', output, {contentType: 'text/plain'});
     // TODO: This should also work on staging
