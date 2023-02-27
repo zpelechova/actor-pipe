@@ -17,7 +17,7 @@ const {
 } = input;
 
 const targetActorId = "dSCLg0C3YEZ83HzYX";
-const mode = "handleWebhook";
+
 const transformFunction = async ({ payload, apifyClient, log }) => {
     log.info('Received payload', payload);
     const { items } = await apifyClient.dataset(payload.resource.defaultDatasetId).listItems({
@@ -28,30 +28,8 @@ const transformFunction = async ({ payload, apifyClient, log }) => {
         };
     }
 
-if (mode === "outputPayload") {
-    // Parse transform function to see that it's valid
-    parseTransformFunction(input.transformFunction);
-
-    // Generate the desired output
-    const output = JSON.stringify({
-        targetActorId,
-        targetActorOptions,
-        transformFunction,
-        mode: "handleWebhook",
-        PAYLOAD_PLACEHOLDER: 0,
-    })
-
-    // Replace the payload placeholder with actual output (this is needed for the webhook)
-    .replace('"PAYLOAD_PLACEHOLDER":0', '"payload":{"userId":{{userId}},"createdAt":{{createdAt}},"eventType":{{eventType}},"eventData":{{eventData}},"resource":{{resource}}}');
-    await Actor.setValue('OUTPUT_PAYLOAD', output, {contentType: 'text/plain'});
-    // TODO: This should also work on staging - maybe we could get this info from client?
-    await Actor.setValue('OUTPUT_URL', `${apiBaseUrl}/v2/acts/${process.env.APIFY_ACTOR_ID}/runs`, {contentType: 'text/plain'});
-
-} else {
-    const transformFunction = parseTransformFunction(transformFunction);
     const targetActorInput = await transformFunction({payload, apifyClient: Actor.apifyClient, log});
     await Actor.call(targetActorId, targetActorInput, targetActorOptions);
-}
 
 // Exit successfully
 await Actor.exit();
