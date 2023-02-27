@@ -2,49 +2,5 @@
     "title": "Input schema for the empty project actor.",
     "type": "object",
     "schemaVersion": 1,
-    "properties": {
-        "transformFunction": {
-            "title": "Function that generates the input",
-            "type": "string",
-            "description": "Generate input of the actor based on standard webhook payload",
-            "editor": "javascript",
-            "prefill": "async ({ payload, apifyClient, log }) => {\nreturn {};\n}\n"
-        },
-        "targetActorId": {
-            "title": "Actor id",
-            "type": "string",
-            "description": "Id of actor that should be passed the input",
-            "editor": "textfield"
-        },
-        "targetActorOptions": {
-            "title": "Actor options",
-            "description": "Options for the actor that should be started",
-            "type": "object",
-            "editor": "json"
-        },
-        "mode": {
-            "sectionCaption": "Advanced",
-            "title": "Mode",
-            "type": "string",
-            "description": "Select the mode",
-            "editor": "select",
-            "default": "handleWebhook",
-            "enum": ["handleWebhook", "outputPayload"],
-            "enumTitles": ["Handle webhook", "Output payload"]
-        },
-        "payload": {
-            "title": "Payload",
-            "description": "Payload for debugging",
-            "type": "object",
-            "editor": "json"
-        },
-        "apiBaseUrl": {
-            "title": "Apify API base url",
-            "description": "To be able to run locally",
-            "type": "string",
-            "editor": "textfield",
-            "default": "https://api.apify.com"
-        }
-    },
-    "required": ["mode", "transformFunction", "targetActorId"]
+    "properties": {}
 }
