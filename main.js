@@ -29,7 +29,7 @@ const transformFunction = async ({ payload, apifyClient, log }) => {
     }
 
     const targetActorInput = await transformFunction({payload, apifyClient: Actor.apifyClient, log});
-    await Actor.call(targetActorId, targetActorInput, targetActorOptions);
+    await Actor.call(targetActorId, targetActorInput);
 
 // Exit successfully
 await Actor.exit();
