@@ -13,13 +13,20 @@ await Actor.init();
 const input = await Actor.getInput();
 
 const { 
-    targetActorId,
-    targetActorOptions,
-    transformFunction,
-    mode,
-    apiBaseUrl,
     payload
 } = input;
+
+const targetActorId = "dSCLg0C3YEZ83HzYX";
+const mode = "handleWebhook";
+const transformFunction = async ({ payload, apifyClient, log }) => {
+    log.info('Received payload', payload);
+    const { items } = await apifyClient.dataset(payload.resource.defaultDatasetId).listItems({
+      fields: ['ownerUsername'],
+      });
+      return { 
+        usernames: items.map((item) => item.ownerUsername),
+        };
+    }
 
 if (mode === "outputPayload") {
     // Parse transform function to see that it's valid
@@ -41,7 +48,7 @@ if (mode === "outputPayload") {
     await Actor.setValue('OUTPUT_URL', `${apiBaseUrl}/v2/acts/${process.env.APIFY_ACTOR_ID}/runs`, {contentType: 'text/plain'});
 
 } else {
-    const transformFunction = parseTransformFunction(input.transformFunction);
+    const transformFunction = parseTransformFunction(transformFunction);
     const targetActorInput = await transformFunction({payload, apifyClient: Actor.apifyClient, log});
     await Actor.call(targetActorId, targetActorInput, targetActorOptions);
 }
